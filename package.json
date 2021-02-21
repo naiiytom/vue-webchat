@@ -1,10 +1,13 @@
 {
   "name": "vue-chat",
   "version": "0.1.0",
+  "author": "Yuttapichai Lamnaonan",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --host 0.0.0.0 --port 5000",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --outputDir 'dist/app'",
+    "build:lib": "vue-cli-service build --outputDir 'dist/lib' --target lib --name webscreen-chat --formats umd-min src/main.ts",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
@@ -13,6 +16,7 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
+    "vue-beautiful-chat": "^2.5.0",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.2.0"
