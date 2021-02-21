@@ -1,6 +1,7 @@
+// eslint-disable-next-line
+
 <template>
   <div :style="{ background: backgroundColor }">
-    <Header :chosen-color="chosenColor" :colors="colors" />
     <beautiful-chat
       :always-scroll-to-bottom="alwaysScrollToBottom"
       :close="closeChat"
@@ -14,25 +15,24 @@
       :participants="participants"
       :show-close-button="true"
       :show-launcher="true"
-      :show-emoji="true"
-      :show-file="true"
+      :show-emoji="false"
+      :show-file="false"
       :show-typing-indicator="showTypingIndicator"
-      :show-edition="true"
-      :show-deletion="true"
+      :show-edition="false"
+      :show-deletion="false"
       :title-image-url="titleImageUrl"
-      :disable-user-list-toggle="false"
+      :disable-user-list-toggle="true"
       @onType="handleOnType"
       @edit="editMessage"
       @remove="removeMessage"
     >
-      <template v-slot:text-message-toolbox="scopedProps">
-        <button
-          v-if="!scopedProps.me && scopedProps.message.type === 'text'"
-          @click.prevent="like(scopedProps.message.id)"
-        >
-          👍
-        </button>
-      </template>
+      <!-- <template v-slot:text-message-toolbox="scopedProps"> -->
+      <!-- <button v-if="!scopedProps.me && scopedProps.message.type === 'text'"> -->
+      <!-- @click.prevent="like(scopedProps.message.id)"
+        > -->
+      <!-- 👍 -->
+      <!-- </button> -->
+      <!-- </template> -->
       <template v-slot:text-message-body="scopedProps">
         <p
           class="sc-message--text-content"
@@ -99,7 +99,7 @@
         >Dark</a
       >
     </p>
-    <v-dialog />
+    <!-- <v-dialog /> -->
     <p class="text-center messageStyling">
       <label
         >Message styling enabled?
@@ -107,29 +107,21 @@
       </label>
       <a href="#" @click.prevent="showStylingInfo()">info</a>
     </p>
-    <TestArea
-      :chosen-color="chosenColor"
-      :colors="colors"
-      :message-styling="messageStyling"
-      :on-message="sendMessage"
-      :on-typing="handleTyping"
-    />
-    <Footer :chosen-color="chosenColor" :colors="colors" />
   </div>
 </template>
 
 <script>
-import messageHistory from "./utils/messageHistory";
+import welcomeMessage from "./utils/welcomeMessage";
 import chatParticipants from "./utils/chatProfiles";
 import availableColors from "./utils/colors";
 export default {
-  name: "App",
+  name: "app",
   data() {
     return {
       participants: chatParticipants,
       titleImageUrl:
-        "https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png",
-      messageList: messageHistory,
+        "https://cdn.discordapp.com/avatars/559426966151757824/c7c54eb85e591ced4c2f0864b7ea4e3e.webp?size=32",
+      messageList: welcomeMessage,
       newMessagesCount: 0,
       isChatOpen: false,
       showTypingIndicator: "",
@@ -152,7 +144,7 @@ export default {
     },
   },
   created() {
-    this.setColor("blue");
+    this.setColor("red");
   },
   mounted() {
     this.messageList.forEach((x) => (x.liked = false));
@@ -237,39 +229,6 @@ body {
 }
 * {
   font-family: Avenir Next, Helvetica Neue, Helvetica, sans-serif;
-}
-.demo-description {
-  max-width: 500px;
-}
-.demo-description img {
-  max-width: 500px;
-}
-.demo-test-area {
-  width: 300px;
-  box-sizing: border-box;
-}
-.demo-test-area--text {
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-  resize: none;
-  font-family: Avenir Next, Helvetica Neue, Helvetica, sans-serif;
-  background: #fafbfc;
-  color: #8da2b5;
-  border: 1px solid #dde5ed;
-  font-size: 16px;
-  padding: 16px 15px 14px;
-  margin: 0;
-  border-radius: 6px;
-  outline: none;
-  height: 150px;
-  margin-bottom: 10px;
-}
-.demo-monster-img {
-  width: 400px;
-  display: block;
-  margin: 60px auto;
 }
 .text-center {
   text-align: center;
