@@ -121,13 +121,9 @@
 <script>
 import messageHistory from "./utils/messageHistory";
 import chatParticipants from "./utils/chatProfiles";
-// import TestArea from "./TestArea.vue";
 import availableColors from "./utils/colors";
 export default {
   name: "App",
-  // components: {
-  //   TestArea,
-  // },
   data() {
     return {
       participants: chatParticipants,
