@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --host 0.0.0.0 --port 5000",
-    "build": "vue-cli-service build --outputDir 'dist/app'",
-    "build:lib": "vue-cli-service build --outputDir 'dist/lib' --target lib --name webscreen-chat --formats umd-min src/main.ts",
+    "build": "vue-cli-service build --dest dist/app/",
+    "build:lib": "vue-cli-service build --dest dist/lib/ --target lib --name webscreen-chat --formats umd-min src/main.ts",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
