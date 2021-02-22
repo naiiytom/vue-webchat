@@ -100,13 +100,6 @@
       >
     </p>
     <!-- <v-dialog /> -->
-    <p class="text-center messageStyling">
-      <label
-        >Message styling enabled?
-        <input checked type="checkbox" @change="messageStylingToggled" />
-      </label>
-      <a href="#" @click.prevent="showStylingInfo()">info</a>
-    </p>
   </div>
 </template>
 
@@ -114,13 +107,13 @@
 import welcomeMessage from "./utils/welcomeMessage";
 import chatParticipants from "./utils/chatProfiles";
 import availableColors from "./utils/colors";
+import botAvatar from "./utils/misc";
 export default {
-  name: "app",
+  name: "App",
   data() {
     return {
       participants: chatParticipants,
-      titleImageUrl:
-        "https://cdn.discordapp.com/avatars/559426966151757824/c7c54eb85e591ced4c2f0864b7ea4e3e.webp?size=32",
+      titleImageUrl: botAvatar,
       messageList: welcomeMessage,
       newMessagesCount: 0,
       isChatOpen: false,
@@ -130,7 +123,7 @@ export default {
       chosenColor: null,
       alwaysScrollToBottom: true,
       messageStyling: true,
-      userIsTyping: false,
+      userIsTyping: false
     };
   },
   computed: {
@@ -141,13 +134,13 @@ export default {
     },
     backgroundColor() {
       return this.chosenColor === "dark" ? this.colors.messageList.bg : "#fff";
-    },
+    }
   },
   created() {
     this.setColor("red");
   },
   mounted() {
-    this.messageList.forEach((x) => (x.liked = false));
+    this.messageList.forEach(x => (x.liked = false));
   },
   methods: {
     sendMessage(text) {
@@ -159,7 +152,7 @@ export default {
           author: "support",
           type: "text",
           id: Math.random(),
-          data: { text },
+          data: { text }
         });
       }
     },
@@ -172,7 +165,7 @@ export default {
     onMessageWasSent(message) {
       this.messageList = [
         ...this.messageList,
-        Object.assign({}, message, { id: Math.random() }),
+        Object.assign({}, message, { id: Math.random() })
       ];
     },
     openChat() {
@@ -190,7 +183,7 @@ export default {
       this.$modal.show("dialog", {
         title: "Info",
         text:
-          "You can use *word* to <strong>boldify</strong>, /word/ to <em>emphasize</em>, _word_ to <u>underline</u>, `code` to <code>write = code;</code>, ~this~ to <del>delete</del> and ^sup^ or ¡sub¡ to write <sup>sup</sup> and <sub>sub</sub>",
+          "You can use *word* to <strong>boldify</strong>, /word/ to <em>emphasize</em>, _word_ to <u>underline</u>, `code` to <code>write = code;</code>, ~this~ to <del>delete</del> and ^sup^ or ¡sub¡ to write <sup>sup</sup> and <sub>sub</sub>"
       });
     },
     messageStylingToggled(e) {
@@ -201,24 +194,24 @@ export default {
       this.userIsTyping = true;
     },
     editMessage(message) {
-      const m = this.messageList.find((m) => m.id === message.id);
+      const m = this.messageList.find(m => m.id === message.id);
       m.isEdited = true;
       m.data.text = message.data.text;
     },
     removeMessage(message) {
       if (confirm("Delete?")) {
-        const m = this.messageList.find((m) => m.id === message.id);
+        const m = this.messageList.find(m => m.id === message.id);
         m.type = "system";
         m.data.text = "This message has been removed";
       }
     },
     like(id) {
-      const m = this.messageList.findIndex((m) => m.id === id);
+      const m = this.messageList.findIndex(m => m.id === id);
       const msg = this.messageList[m];
       msg.liked = !msg.liked;
       this.$set(this.messageList, m, msg);
-    },
-  },
+    }
+  }
 };
 </script>
 
