@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-
 <template>
   <div :style="{ background: backgroundColor }">
     <beautiful-chat
@@ -15,24 +13,25 @@
       :participants="participants"
       :show-close-button="true"
       :show-launcher="true"
-      :show-emoji="false"
-      :show-file="false"
+      :show-emoji="true"
+      :show-file="true"
       :show-typing-indicator="showTypingIndicator"
-      :show-edition="false"
-      :show-deletion="false"
+      :show-edition="true"
+      :show-deletion="true"
       :title-image-url="titleImageUrl"
-      :disable-user-list-toggle="true"
+      :disable-user-list-toggle="false"
       @onType="handleOnType"
       @edit="editMessage"
       @remove="removeMessage"
     >
-      <!-- <template v-slot:text-message-toolbox="scopedProps"> -->
-      <!-- <button v-if="!scopedProps.me && scopedProps.message.type === 'text'"> -->
-      <!-- @click.prevent="like(scopedProps.message.id)"
-        > -->
-      <!-- 👍 -->
-      <!-- </button> -->
-      <!-- </template> -->
+      <template v-slot:text-message-toolbox="scopedProps">
+        <button
+          v-if="!scopedProps.me && scopedProps.message.type === 'text'"
+          @click.prevent="like(scopedProps.message.id)"
+        >
+          👍
+        </button>
+      </template>
       <template v-slot:text-message-body="scopedProps">
         <p
           class="sc-message--text-content"
@@ -100,6 +99,21 @@
       >
     </p>
     <!-- <v-dialog /> -->
+    <p class="text-center messageStyling">
+      <label
+        >Message styling enabled?
+        <input checked type="checkbox" @change="messageStylingToggled" />
+      </label>
+      <a href="#" @click.prevent="showStylingInfo()">info</a>
+    </p>
+    <TestArea
+      :chosen-color="chosenColor"
+      :colors="colors"
+      :message-styling="messageStyling"
+      :on-message="sendMessage"
+      :on-typing="handleTyping"
+    />
+    <Footer :chosen-color="chosenColor" :colors="colors" />
   </div>
 </template>
 
@@ -108,8 +122,12 @@ import welcomeMessage from "./utils/welcomeMessage";
 import chatParticipants from "./utils/chatProfiles";
 import availableColors from "./utils/colors";
 import botAvatar from "./utils/misc";
+import TestArea from "./TestArea";
 export default {
   name: "App",
+  components: {
+    TestArea,
+  },
   data() {
     return {
       participants: chatParticipants,
@@ -123,7 +141,7 @@ export default {
       chosenColor: null,
       alwaysScrollToBottom: true,
       messageStyling: true,
-      userIsTyping: false
+      userIsTyping: false,
     };
   },
   computed: {
@@ -134,13 +152,13 @@ export default {
     },
     backgroundColor() {
       return this.chosenColor === "dark" ? this.colors.messageList.bg : "#fff";
-    }
+    },
   },
   created() {
     this.setColor("red");
   },
   mounted() {
-    this.messageList.forEach(x => (x.liked = false));
+    this.messageList.forEach((x) => (x.liked = false));
   },
   methods: {
     sendMessage(text) {
@@ -149,10 +167,10 @@ export default {
           ? this.newMessagesCount
           : this.newMessagesCount + 1;
         this.onMessageWasSent({
-          author: "support",
+          author: "bot",
           type: "text",
           id: Math.random(),
-          data: { text }
+          data: { text },
         });
       }
     },
@@ -165,7 +183,7 @@ export default {
     onMessageWasSent(message) {
       this.messageList = [
         ...this.messageList,
-        Object.assign({}, message, { id: Math.random() })
+        Object.assign({}, message, { id: Math.random() }),
       ];
     },
     openChat() {
@@ -183,7 +201,7 @@ export default {
       this.$modal.show("dialog", {
         title: "Info",
         text:
-          "You can use *word* to <strong>boldify</strong>, /word/ to <em>emphasize</em>, _word_ to <u>underline</u>, `code` to <code>write = code;</code>, ~this~ to <del>delete</del> and ^sup^ or ¡sub¡ to write <sup>sup</sup> and <sub>sub</sub>"
+          "You can use *word* to <strong>boldify</strong>, /word/ to <em>emphasize</em>, _word_ to <u>underline</u>, `code` to <code>write = code;</code>, ~this~ to <del>delete</del> and ^sup^ or ¡sub¡ to write <sup>sup</sup> and <sub>sub</sub>",
       });
     },
     messageStylingToggled(e) {
@@ -194,24 +212,24 @@ export default {
       this.userIsTyping = true;
     },
     editMessage(message) {
-      const m = this.messageList.find(m => m.id === message.id);
+      const m = this.messageList.find((m) => m.id === message.id);
       m.isEdited = true;
       m.data.text = message.data.text;
     },
     removeMessage(message) {
       if (confirm("Delete?")) {
-        const m = this.messageList.find(m => m.id === message.id);
+        const m = this.messageList.find((m) => m.id === message.id);
         m.type = "system";
         m.data.text = "This message has been removed";
       }
     },
     like(id) {
-      const m = this.messageList.findIndex(m => m.id === id);
+      const m = this.messageList.findIndex((m) => m.id === id);
       const msg = this.messageList[m];
       msg.liked = !msg.liked;
       this.$set(this.messageList, m, msg);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -220,21 +238,64 @@ body {
   padding: 0px;
   margin: 0px;
 }
+
 * {
   font-family: Avenir Next, Helvetica Neue, Helvetica, sans-serif;
 }
+
+.demo-description {
+  max-width: 500px;
+}
+
+.demo-description img {
+  max-width: 500px;
+}
+
+.demo-test-area {
+  width: 300px;
+  box-sizing: border-box;
+}
+
+.demo-test-area--text {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  resize: none;
+  font-family: Avenir Next, Helvetica Neue, Helvetica, sans-serif;
+  background: #fafbfc;
+  color: #8da2b5;
+  border: 1px solid #dde5ed;
+  font-size: 16px;
+  padding: 16px 15px 14px;
+  margin: 0;
+  border-radius: 6px;
+  outline: none;
+  height: 150px;
+  margin-bottom: 10px;
+}
+
+.demo-monster-img {
+  width: 400px;
+  display: block;
+  margin: 60px auto;
+}
+
 .text-center {
   text-align: center;
 }
+
 .colors a {
   color: #fff;
   text-decoration: none;
   padding: 4px 10px;
   border-radius: 10px;
 }
+
 .toggle a {
   text-decoration: none;
 }
+
 .messageStyling {
   font-size: small;
 }

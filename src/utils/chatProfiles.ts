@@ -1,8 +1,8 @@
-import botAvatar from "./misc";
+import botAvatar from './misc'
 export default [
   {
-    id: "bot",
-    name: "Bot",
+    id: 'bot',
+    name: 'Bot',
     imageUrl: botAvatar
   }
-];
+]

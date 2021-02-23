@@ -1,1 +1,1 @@
-declare module "vue-beautiful-chat";
+declare module './lib/vue-beautiful-chat.umd.min.js';

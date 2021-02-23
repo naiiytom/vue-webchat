@@ -1,8 +1,8 @@
 export default [
   {
-    type: "text",
-    author: `bot`,
+    type: 'text',
+    author: 'bot',
     id: 0,
-    data: { text: `สวัสดี มีอะไรให้เราช่วยไหม?` }
+    data: { text: 'สวัสดี มีอะไรให้เราช่วยไหม?' }
   }
-];
+]

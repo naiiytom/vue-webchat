@@ -11,10 +11,11 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "allowJs": true,
+    "checkJs": false,
     "baseUrl": ".",
     "types": [
-      "webpack-env",
-      "jest"
+      "webpack-env"
     ],
     "paths": {
       "@/*": [
@@ -36,6 +37,8 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/lib",
+    "lib"
   ]
 }
