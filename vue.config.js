@@ -1,23 +1,21 @@
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-
 module.exports = {
-  configureWebpack: config => {
-    // get a reference to the existing ForkTsCheckerWebpackPlugin
-    const existingForkTsChecker = config.plugins.filter(
-      p => p instanceof ForkTsCheckerWebpackPlugin
-    )[0];
-
-    // remove the existing ForkTsCheckerWebpackPlugin
-    // so that we can replace it with our modified version
-    config.plugins = config.plugins.filter(
-      p => !(p instanceof ForkTsCheckerWebpackPlugin)
-    );
-
-    // copy the options from the original ForkTsCheckerWebpackPlugin
-    // instance and add the memoryLimit property
-    const forkTsCheckerOptions = existingForkTsChecker.options;
-    forkTsCheckerOptions.memoryLimit = 4096;
-
-    config.plugins.push(new ForkTsCheckerWebpackPlugin(forkTsCheckerOptions));
-  }
+  parallel: false,
+  chainWebpack: (config) => {
+    config.resolve.symlinks(false);
+  },
+  publicPath: process.env.PUBLICPATH || '',
+  css: {
+    loaderOptions: {
+      postcss: {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        plugins: [
+          require('postcss-import'),
+          require('tailwindcss'),
+          require('postcss-nested'),
+          require('postcss-custom-properties'),
+          require('autoprefixer'),
+        ],
+      },
+    },
+  },
 };
